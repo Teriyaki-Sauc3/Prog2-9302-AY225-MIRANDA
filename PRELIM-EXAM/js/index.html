@@ -107,63 +107,83 @@
     </table>
 
     <footer>
-        &copy; 2024 Student Record System - John Paul Benedict G. Miranda 23-0332-752
+        &copy; 2026 Student Record System - John Paul Benedict G. Miranda 23-0332-752
     </footer>
 
     <script>
         // John Paul Benedict G. Miranda
         // 23-0332-752
         
-        // Global array to store student data
-        let students = [];
-        const CSV_FILE = 'MOCK_DATA.csv';
+        // Hardcoded CSV content as a multi-line string
+        // Original data has: ID, FirstName, LastName, Lab1, Lab2, Lab3, PrelimExam, Attendance
+        // Grade is computed using formula:
+        // labAvg = (lab1 + lab2 + lab3) / 3
+        // classStanding = (attendance * 0.40) + (labAvg * 0.60)
+        // grade = (classStanding * 0.70) + (prelimExam * 0.30)
+        const CSV_DATA = `ID,FirstName,LastName,Lab1,Lab2,Lab3,PrelimExam,Attendance
+073900438,Osbourne,Wakenshaw,69,5,52,12,78
+114924014,Albie,Gierardi,58,92,16,57,97
+111901632,Eleen,Pentony,43,81,34,36,16
+084000084,Arie,Okenden,31,5,14,39,99
+272471551,Alica,Muckley,49,66,97,3,95
+104900721,Jo,Burleton,98,94,33,13,29
+111924392,Cam,Akram,44,84,17,16,24
+292970744,Celine,Brosoli,3,15,71,83,45
+107004352,Alan,Belfit,31,51,36,70,48
+071108313,Jeanette,Gilvear,4,78,15,69,69
+042204932,Ethelin,MacCathay,48,36,23,1,11
+111914218,Kakalina,Finnick,69,5,65,10,8
+074906059,Mayer,Lorenzetti,36,30,100,41,92
+091000080,Selia,Rosenstengel,15,42,85,68,28
+055002480,Dalia,Tadd,84,86,13,91,22
+063101111,Darryl,Doogood,36,3,78,13,100
+071908827,Brier,Wace,69,92,23,75,40
+322285668,Bucky,Udall,97,63,19,46,28
+103006406,Haslett,Beaford,41,32,85,60,61
+104913048,Shelley,Spring,84,73,63,59,3`;
 
-        // Load CSV file on page load
-        async function loadCSV() {
-            try {
-                const response = await fetch(CSV_FILE);
-                const csvData = await response.text();
-                parseCSV(csvData);
-                render();
-            } catch (error) {
-                console.error('Error loading CSV:', error);
-                alert('Error loading student data from CSV file');
-            }
+        // Global array to store student data (Array of Objects)
+        let students = [];
+
+        // Compute grade using the formula
+        function computeGrade(lab1, lab2, lab3, prelimExam, attendance) {
+            const labAvg = (lab1 + lab2 + lab3) / 3;
+            const classStanding = (attendance * 0.40) + (labAvg * 0.60);
+            const grade = (classStanding * 0.70) + (prelimExam * 0.30);
+            return grade.toFixed(2);
         }
 
-        // Parse CSV into array of objects
+        // Parse the CSV string into an Array of Objects
         function parseCSV(csvData) {
             const lines = csvData.trim().split('\n');
             // Skip header row (first line)
             students = lines.slice(1).map(line => {
-                const [id, name, grade] = line.split(',');
-                return { id: id.trim(), name: name.trim(), grade: grade.trim() };
+                const parts = line.split(',');
+                const id = parts[0].trim();
+                const firstName = parts[1].trim();
+                const lastName = parts[2].trim();
+                const name = firstName + ' ' + lastName;
+                const lab1 = parseFloat(parts[3]);
+                const lab2 = parseFloat(parts[4]);
+                const lab3 = parseFloat(parts[5]);
+                const prelimExam = parseFloat(parts[6]);
+                const attendance = parseFloat(parts[7]);
+                
+                // Compute grade from the raw data
+                const grade = computeGrade(lab1, lab2, lab3, prelimExam, attendance);
+                
+                // Return only ID, Name, and computed Grade
+                return { id: id, name: name, grade: grade };
             });
         }
 
-        // Save data back to CSV (creates download since we can't write directly)
-        function saveToCSV() {
-            // Include header row
-            let csvContent = 'ID,Name,Grade\n' + students.map(s => `${s.id},${s.name},${s.grade}`).join('\n');
-            
-            // Create a blob and download link
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'class_records.csv';
-            a.click();
-            window.URL.revokeObjectURL(url);
-            
-            alert('CSV file updated! Please replace the old class_records.csv with the downloaded file.');
-        }
-
-        // Read: Render table with current data
+        // Read: Render function that clears and re-populates the table rows
         function render() {
             const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = '';
+            tableBody.innerHTML = ''; // Clear existing rows
 
             students.forEach((student, index) => {
+                // Use Template Literals (backticks) to generate HTML rows dynamically
                 const row = `
                     <tr>
                         <td>${student.id}</td>
@@ -176,13 +196,14 @@
             });
         }
 
-        // Create: Add new student
+        // Create: Function to push() a new object to the array and re-render
         function createRecord() {
             const id = document.getElementById('idInput').value.trim();
             const name = document.getElementById('nameInput').value.trim();
             const grade = document.getElementById('gradeInput').value.trim();
 
             if (id && name && grade) {
+                // Push new object to the array
                 students.push({ id, name, grade });
                 
                 // Clear inputs
@@ -190,24 +211,24 @@
                 document.getElementById('nameInput').value = '';
                 document.getElementById('gradeInput').value = '';
 
+                // Re-render the table
                 render();
-                saveToCSV();
             } else {
                 alert('Please fill in all fields');
             }
         }
 
-        // Delete: Remove student from array
+        // Delete: Remove specific entry from the array
         function deleteRecord(index) {
             if (confirm('Are you sure you want to delete this record?')) {
-                students.splice(index, 1);
-                render();
-                saveToCSV();
+                students.splice(index, 1); // Remove from array
+                render(); // Re-render the table
             }
         }
 
-        // Initialize on page load
-        loadCSV();
+        // Initialize: Parse CSV and render on page load
+        parseCSV(CSV_DATA);
+        render();
     </script>
 </body>
 </html>

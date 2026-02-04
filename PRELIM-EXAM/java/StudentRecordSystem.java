@@ -181,6 +181,14 @@ public class StudentRecordSystem extends JFrame {
         return button;
     }
 
+    // Compute grade using formula: labAvg = (lab1+lab2+lab3)/3, classStanding = (attendance*0.40)+(labAvg*0.60), grade = (classStanding*0.70)+(prelimExam*0.30)
+    private double computeGrade(double lab1, double lab2, double lab3, double prelimExam, double attendance) {
+        double labAvg = (lab1 + lab2 + lab3) / 3.0;
+        double classStanding = (attendance * 0.40) + (labAvg * 0.60);
+        double grade = (classStanding * 0.70) + (prelimExam * 0.30);
+        return Math.round(grade * 100.0) / 100.0; // Round to 2 decimal places
+    }
+
     // Load CSV data on startup with try-catch for file-reading errors
     private void loadCSVData() {
         try {
@@ -196,13 +204,31 @@ public class StudentRecordSystem extends JFrame {
                 }
 
                 // Split the string and populate the DefaultTableModel
+                // CSV format: ID,FirstName,LastName,Lab1,Lab2,Lab3,PrelimExam,Attendance
                 String[] data = line.split(",");
-                String id = data.length > 0 ? data[0].trim() : "";
-                String name = data.length > 1 ? data[1].trim() : "";
-                String grade = data.length > 2 ? data[2].trim() : "";
-
-                Object[] row = {id, name, grade};
-                tableModel.addRow(row);
+                
+                if (data.length >= 8) {
+                    // 8-column format: compute grade from lab scores
+                    String id = data[0].trim();
+                    String name = data[1].trim() + " " + data[2].trim(); // FirstName + LastName
+                    double lab1 = Double.parseDouble(data[3].trim());
+                    double lab2 = Double.parseDouble(data[4].trim());
+                    double lab3 = Double.parseDouble(data[5].trim());
+                    double prelimExam = Double.parseDouble(data[6].trim());
+                    double attendance = Double.parseDouble(data[7].trim());
+                    double grade = computeGrade(lab1, lab2, lab3, prelimExam, attendance);
+                    
+                    Object[] row = {id, name, String.valueOf(grade)};
+                    tableModel.addRow(row);
+                } else if (data.length >= 3) {
+                    // 3-column format: ID, Name, Grade already provided
+                    String id = data[0].trim();
+                    String name = data[1].trim();
+                    String grade = data[2].trim();
+                    
+                    Object[] row = {id, name, grade};
+                    tableModel.addRow(row);
+                }
             }
             br.close();
         } catch (IOException e) {
