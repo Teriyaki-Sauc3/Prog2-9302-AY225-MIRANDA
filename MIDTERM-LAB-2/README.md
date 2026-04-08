@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # 3x3 Matrix Determinant Solver
 
 ## Student Information
