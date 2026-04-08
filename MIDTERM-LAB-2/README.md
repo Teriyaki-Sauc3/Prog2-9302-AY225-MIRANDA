@@ -47,6 +47,7 @@ Each minor is calculated using the 2×2 determinant formula: $\text{det} = ad - 
 
 ### Java Program
 1. do cd "filepath"; javac DeterminantSolver.java; java DeterminantSolver
+    
     Example: 
     cd "c:\Users\John Paul\Downloads\g\Prog2-9302-AY225Miranda\MIDTERM-LAB-2"; javac DeterminantSolver.java; java DeterminantSolver
 2. then it'll run
@@ -55,6 +56,9 @@ Each minor is calculated using the 2×2 determinant formula: $\text{det} = ad - 
 1.  Requires Node.js to be installed.
 2.  Navigate to the project directory.
 3.  Run the script:
+
+node "c:Filepath/determinat_solver.js"
+    
     example:
     node "c:\Users\John Paul\Downloads\g\Prog2-9302-AY225Miranda\MIDTERM-LAB-2\determinat_solver.js"
 
