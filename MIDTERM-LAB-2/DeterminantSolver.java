@@ -70,21 +70,21 @@ public class DeterminantSolver {
         // Remove row 0 and column 0 to get the 2x2 minor.
         // The remaining elements are m[1][1], m[1][2], m[2][1], m[2][2].
         int minor11 = computeMinor(m[1][1], m[1][2], m[2][1], m[2][2]);
-        System.out.printf("  Step 1 — Minor M₁₁: det([%d,%d],[%d,%d]) = (%d×%d)-(%d×%d) = %d%n",
+        System.out.printf("  Step 1 - Minor M11: det([%d,%d],[%d,%d]) = (%dx%d)-(%dx%d) = %d%n",
             m[1][1], m[1][2], m[2][1], m[2][2],
             m[1][1], m[2][2], m[1][2], m[2][1], minor11);
 
         // ── Step 2: Compute minor M₁₂ ──
         // Remove row 0 and column 1. Remaining: m[1][0], m[1][2], m[2][0], m[2][2].
         int minor12 = computeMinor(m[1][0], m[1][2], m[2][0], m[2][2]);
-        System.out.printf("  Step 2 — Minor M₁₂: det([%d,%d],[%d,%d]) = (%d×%d)-(%d×%d) = %d%n",
+        System.out.printf("  Step 2 - Minor M12: det([%d,%d],[%d,%d]) = (%dx%d)-(%dx%d) = %d%n",
             m[1][0], m[1][2], m[2][0], m[2][2],
             m[1][0], m[2][2], m[1][2], m[2][0], minor12);
 
         // ── Step 3: Compute minor M₁₃ ──
         // Remove row 0 and column 2. Remaining: m[1][0], m[1][1], m[2][0], m[2][1].
         int minor13 = computeMinor(m[1][0], m[1][1], m[2][0], m[2][1]);
-        System.out.printf("  Step 3 — Minor M₁₃: det([%d,%d],[%d,%d]) = (%d×%d)-(%d×%d) = %d%n",
+        System.out.printf("  Step 3 - Minor M13: det([%d,%d],[%d,%d]) = (%dx%d)-(%dx%d) = %d%n",
             m[1][0], m[1][1], m[2][0], m[2][1],
             m[1][0], m[2][1], m[1][1], m[2][0], minor13);
 
@@ -97,9 +97,9 @@ public class DeterminantSolver {
         int c13 =  m[0][2] * minor13;
 
         System.out.println();
-        System.out.printf("  Cofactor C₁₁ = (+1) × %d × %d = %d%n", m[0][0], minor11, c11);
-        System.out.printf("  Cofactor C₁₂ = (-1) × %d × %d = %d%n", m[0][1], minor12, c12);
-        System.out.printf("  Cofactor C₁₃ = (+1) × %d × %d = %d%n", m[0][2], minor13, c13);
+        System.out.printf("  Cofactor C11 = (+1) x %d x %d = %d%n", m[0][0], minor11, c11);
+        System.out.printf("  Cofactor C12 = (-1) x %d x %d = %d%n", m[0][1], minor12, c12);
+        System.out.printf("  Cofactor C13 = (+1) x %d x %d = %d%n", m[0][2], minor13, c13);
         System.out.println("-".repeat(52));
 
         // ── Final Determinant ──

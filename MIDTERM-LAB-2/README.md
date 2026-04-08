@@ -46,23 +46,17 @@ Each minor is calculated using the 2×2 determinant formula: $\text{det} = ad - 
 ## How to Run
 
 ### Java Program
-1.  Navigate to the project directory.
-2.  Compile the Java file:
-    ```sh
-    javac DeterminantSolver.java
-    ```
-3.  Run the compiled class:
-    ```sh
-    java DeterminantSolver
-    ```
+1. do cd "filepath"; javac DeterminantSolver.java; java DeterminantSolver
+    Example: 
+    cd "c:\Users\John Paul\Downloads\g\Prog2-9302-AY225Miranda\MIDTERM-LAB-2"; javac DeterminantSolver.java; java DeterminantSolver
+2. then it'll run
 
 ### JavaScript Program
 1.  Requires Node.js to be installed.
 2.  Navigate to the project directory.
 3.  Run the script:
-    ```sh
-    node determinat_solver.js
-    ```
+    example:
+    node "c:\Users\John Paul\Downloads\g\Prog2-9302-AY225Miranda\MIDTERM-LAB-2\determinat_solver.js"
 
 ## Sample Output
 Both programs produce the identical console output, showing a clear, step-by-step solution:
