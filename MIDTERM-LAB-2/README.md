@@ -100,6 +100,4 @@ Since the determinant is non-zero (-21 ≠ 0), the matrix is **invertible (non-s
 - `determinat_solver.js` – JavaScript (Node.js) implementation of the solver.
 - `README.md` – This documentation file.
 =======
-# Prog2-9302-AY225
-Repository of Programming 2 section 9302-AY225
->>>>>>> 728392ffb455f3cb10d3578a93f70f310e18cb36
+
