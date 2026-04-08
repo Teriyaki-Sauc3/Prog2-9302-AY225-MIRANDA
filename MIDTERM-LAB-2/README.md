@@ -97,5 +97,6 @@ Since the determinant is non-zero (-21 ≠ 0), the matrix is **invertible (non-s
 - `DeterminantSolver.java` – Java implementation of the determinant solver.
 - `determinat_solver.js` – JavaScript (Node.js) implementation of the solver.
 - `README.md` – This documentation file.
+
 =======
 
